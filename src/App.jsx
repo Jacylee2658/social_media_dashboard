@@ -71,6 +71,7 @@ function App() {
   }, [isDark]);
 
   return (
+
     <main className="dashboard">
       <header className="dashboard-header">
         <div>
@@ -79,7 +80,7 @@ function App() {
         </div>
 
         <label className="theme-control">
-          <span>Dark Mode</span>
+          <span>{isDark ? "Light Mode" : "Dark Mode"}</span>
           <span className="theme-switch">
             <input
               type="checkbox"
@@ -154,5 +155,6 @@ function App() {
     </main>
   );
 }
+
 
 export default App;
