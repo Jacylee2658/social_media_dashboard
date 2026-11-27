@@ -240,6 +240,133 @@
   );
 }
 
+/* footer {
+  background-color: red;
+} */
+
+
+.card-details {
+  margin-top: 32px;
+}
+
+.details-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  color: var(--color-text);
+}
+
+.details-header > svg {
+  flex: 0 0 auto;
+  font-size: 28px;
+}
+
+.details-header h2 {
+  margin: 0;
+  color: var(--color-heading);
+}
+
+.details-header p {
+  margin: 6px 0 0;
+  color: var(--color-text);
+}
+
+.details-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 6px;
+  background: var(--color-card);
+}
+
+.details-summary p:first-child {
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.details-summary p:nth-child(2) {
+  color: var(--color-heading);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.details-summary p:nth-child(3) {
+  color: var(--color-positive);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.card-details > h3 {
+  margin: 28px 0 16px;
+  color: var(--color-heading);
+  font-size: 20px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.details-metric,
+.featured-content {
+  padding: 24px;
+  border-radius: 6px;
+  background: var(--color-card);
+}
+
+.details-metric p:first-child,
+.featured-content > p:first-child {
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.details-metric p:nth-child(2) {
+  margin-top: 14px;
+  color: var(--color-heading);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.featured-content {
+  margin-top: 24px;
+}
+
+.featured-content h3 {
+  margin: 12px 0;
+  color: var(--color-heading);
+  font-size: 18px;
+}
+
+.featured-content > p:last-child {
+  color: var(--color-positive);
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .details-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .details-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
 .theme-switch input:checked + .switch-track::after {
   transform: translateX(24px);
 }

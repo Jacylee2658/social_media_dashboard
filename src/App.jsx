@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   FaFacebookF,
   FaTwitter,
   FaInstagram,
   FaYoutube,
-  FaCaretUp,
-  FaCaretDown,
 } from "react-icons/fa";
+import { uid } from 'react-uid';
 import "./App.css";
+import { Footer } from "./component/Footer";
+import { PlatformCard } from "./component/PlatformCard";
+import MetricCard from "./component/MetricCard";
+import { CardDetails } from "./component/CardDetails";
+
 
 const platforms = [
   {
@@ -19,7 +23,21 @@ const platforms = [
     change: "12 Today",
     trend: "up",
     Icon: FaFacebookF,
+    details:  {
+      period: "Last 7 days",
+      metrics: [
+        {label: "Page Likes", value: "5,420" },
+        {label: "Weekly Reach", value: "42.3k" },
+        {label: "Engagement Rate", value: "4.8%" },
+      ],
+      featured: {
+        label: "Recent Post",
+        title: "A behind-the-scenes look at our latest project",
+        result: "2,340 reactions",
+      },
+    },
   },
+
   {
     name: "Twitter",
     network: "twitter",
@@ -29,7 +47,21 @@ const platforms = [
     change: "99 Today",
     trend: "up",
     Icon: FaTwitter,
+    details: {
+      period: "Last 7 days",
+      metrics: [
+        {label: "Post Impressions", value: "128k" },
+        {label: "Profile Visits", value: "2,310" },
+        {label: "Engagement Rate", value: "3.9%" },
+      ],
+      featured: {
+        label: "Recent Post",
+        title: "What are you working on this week?",
+        result: "340 likes and 82 reposts",
+      },
+    },
   },
+
   {
     name: "Instagram",
     network: "instagram",
@@ -39,7 +71,21 @@ const platforms = [
     change: "1099 Today",
     trend: "up",
     Icon: FaInstagram,
+    details: {
+      period: "Last 7 days",
+      metrics: [
+        {label: "Accounts Reached", value: "28.5k" },
+        {label: "Profile Visits", value: "4,120" },
+        {label: "Engagement Rate", value: "6.2%" },
+      ],
+      featured: {
+        label: "Recent Content",
+        title: "Our latest behind-the-scenes Reel",
+        result: "11.2k plays",
+      },
+    },
   },
+
   {
     name: "YouTube",
     network: "youtube",
@@ -49,6 +95,19 @@ const platforms = [
     change: "144 Today",
     trend: "down",
     Icon: FaYoutube,
+    details: {
+      period: "Last 7 days",
+      metrics: [
+        {label: "Monthly Views", value: "86,420" },
+        {label: "Watch Time", value: "1,230 hours" },
+        {label: "Average View Duration", value: "4:12" },
+      ],
+      featured: {
+        label: "Recent Video",
+        title: "How we planned our latest project",
+        result: "8,900 views",
+      },
+    },
   },
 ];
 
@@ -65,13 +124,14 @@ const metrics = [
 
 function App() {
   const [isDark, setIsDark] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState(null);
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = isDark ? "dark" : "light";
-  }, [isDark]);
+  // useEffect(() => {
+  //   document.documentElement.dataset.theme = isDark ? "dark" : "light";
+  // }, [isDark]);
 
   return (
-
+      <Fragment>
     <main className="dashboard">
       <header className="dashboard-header">
         <div>
@@ -86,73 +146,49 @@ function App() {
               type="checkbox"
               role="switch"
               checked={isDark}
-              onChange={(event) => setIsDark(event.target.checked)}
+              onChange={(event) => {
+                const nextIsDark = event.target.checked;
+                setIsDark(nextIsDark);
+                document.documentElement.dataset.theme = nextIsDark ? "dark" : "light";
+              }}
             />
             <span className="switch-track" aria-hidden="true" />
           </span>
         </label>
+        <button onClick={()=> setSelectedCardId(null)}>Home</button>
       </header>
 
-      <section className="platform-grid" aria-label="Social media accounts">
-        {platforms.map((platform) => {
-          const Icon = platform.Icon;
-          const TrendIcon = platform.trend === "up" ? FaCaretUp : FaCaretDown;
+      {selectedCardId ? (
+        <CardDetails cardId = {selectedCardId} platforms={platforms} />
+      ) : (
+        <>
+          <section className="platform-grid" aria-label="Social media accounts">
+          {platforms.map((platform) =>
+          <PlatformCard 
+            platform={platform} 
+            key={platform.network} 
+            onSelect={setSelectedCardId}
+            />
+          )}
+        </section>
 
-          return (
-            <article className="platform-card" key={platform.name}>
-              <div
-                className="social-account"
-                aria-label={`${platform.name} account ${platform.handle}`}
-              >
-                <Icon
-                  className={`social-icon social-icon--${platform.network}`}
-                  aria-hidden="true"
-                />
-                <span>{platform.handle}</span>
-              </div>
+        <section className="overview" aria-labelledby="overview-heading">
+          <h2 id="overview-heading">Overview - Today</h2>
 
-              <p className="platform-count">{platform.followers}</p>
-              <p className="platform-unit">{platform.unit}</p>
+          <div className="metrics-grid">
+            {metrics.map((metric) =>
+              <MetricCard metric={metric} key={uid(metric)} />
+              )
+            }
+          </div>
+        </section> 
+        </>
+      )}
 
-              <p className={`trend trend--${platform.trend}`}>
-                <TrendIcon aria-hidden="true" />
-                <span>{platform.change}</span>
-              </p>
-            </article>
-          );
-        })}
-      </section>
-
-      <section className="overview" aria-labelledby="overview-heading">
-        <h2 id="overview-heading">Overview - Today</h2>
-
-        <div className="metrics-grid">
-          {metrics.map((metric, index) => {
-            const Icon = metric.Icon;
-            const TrendIcon = metric.trend === "up" ? FaCaretUp : FaCaretDown;
-
-            return (
-              <article className="metric-card" key={`${metric.label}-${index}`}>
-                <div className="metric-heading">
-                  <p>{metric.label}</p>
-                  <Icon
-                    className={`social-icon social-icon--${metric.network}`}
-                    aria-hidden="true"
-                  />
-                </div>
-
-                <p className="metric-value">{metric.value}</p>
-
-                <p className={`trend trend--${metric.trend}`}>
-                  <TrendIcon aria-hidden="true" />
-                  <span>{metric.change}</span>
-                </p>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+      
     </main>
+    <Footer />
+  </Fragment>
   );
 }
 
